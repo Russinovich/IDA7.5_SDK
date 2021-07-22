@@ -1,0 +1,122 @@
+// Move Instructions
+PIC16_EXCH:   "Exchange Wns and Wnd"
+PIC16_MOV:    "Move"
+PIC16_SWAP:   "Byte or Nibble Swap Wn"
+PIC16_TBLRDH: "Table Read High"
+PIC16_TBLRDL: "Table Read Low"
+PIC16_TBLWTH: "Table Write High"
+PIC16_TBLWTL: "Table Write Low"
+// Only for PIC24E and dsPIC33E
+PIC16_MOVPAG: "Move to Page Register"
+
+// Math Instructions
+PIC16_ADD:    "Add"
+PIC16_ADDC:  "Add with carry"
+PIC16_DAWB:  "Decimal Adjust Wn"
+PIC16_DEC:   "Decrement"
+PIC16_DEC2:  "Decrement by 2"
+PIC16_DIV:   "Signed/Unsigned Integer Divide"
+PIC16_INC:   "Increment"
+PIC16_INC2:  "Increment by 2"
+PIC16_MUL:  "Integer Multiply"
+PIC16_SE:   "Sign-Extend Ws"
+PIC16_SUB:  "Subtract"
+PIC16_SUBB: "Subtract with Borrow"
+PIC16_SUBBR: "Subtract with Borrow"
+PIC16_SUBR: "Subtract"
+PIC16_ZE: "Zero - Extend Ws"
+// Only for PIC24E and dsPIC33E
+PIC16_MULW: "Integer Multiply with 16-bit Result"
+// Only for dsPIC
+PIC16_DIVF: "Fractional Divide"
+
+// Logic Instructions
+PIC16_AND: "AND"
+PIC16_CLR: "Clear f or WREG | Clear Wd"
+PIC16_COM: "Complement f | Complement Ws"
+PIC16_IOR: "Inclusive OR"
+PIC16_NEG: "Negate f | Negate Ws"
+PIC16_SETM: "Set f or WREG | Set Ws"
+PIC16_XOR: "Exclusive OR"
+
+// Rotate/Shift Instructions
+PIC16_ASR: "Arithmetic Shift Right"
+PIC16_LSR: "Logical Shift Right"
+PIC16_RLC: "Rotate Left through Carry"
+PIC16_RLNC: "Rotate Left without Carry"
+PIC16_RRC: "Rotate Right through Carry"
+PIC16_RRNC: "Rotate Right without Carry"
+PIC16_SL: "Shift Left"
+
+// Bit Instructions
+PIC16_BCLR: "Bit Clear f | Bit Clear in Ws"
+PIC16_BSET: "Bit Set f | Bit Set in Ws"
+PIC16_BSW: "Bit Write in Ws"
+PIC16_BTG: "Bit Toggle f | Bit Toggle in Ws"
+PIC16_BTST: "Bit Test f | Bit Test in Ws"
+PIC16_BTSTS: "Bit Test/Set f | Bit Test/Set in Ws"
+PIC16_FBCL: "Find First Bit Change from Left"
+PIC16_FF1L: "Find First One from Left"
+PIC16_FF1R: "Find First One from Right"
+
+
+// Compare/Skip and Compare/Branch Instructions
+PIC16_BTSC: "Bit Test, Skip if Clear"
+PIC16_BTSS: "Bit Test, Skip if Set"
+PIC16_CP: "Compare, Set Status Flags"
+PIC16_CP0: "Compare, Set Status Flags"
+PIC16_CPB: "Compare using Borrow, set Status Flags"
+PIC16_CPSEQ: "Compare Wb with Wn, Skip if Equal (Wb = Wn)"
+PIC16_CPSGT: "Signed Compare Wb with Wn, Skip if Greater Than (Wb > Wn)"
+PIC16_CPSLT: "Signed Compare Wb with Wn, Skip if Less Than (Wb < Wn)"
+PIC16_CPSNE: "Signed Compare Wb with Wn, Skip if Not Equal (Wb != Wn)"
+// Only for PIC24E and dsPIC33E
+PIC16_CPBEQ: "Compare Wb with Wn, branch if ="
+PIC16_CPBNE: "Compare Wb with Wn, Branch if Not Equal (Wb != Wn)"
+PIC16_CPBGT: "Signed Compare Wb with Wn, Branch if Greater Than (Wb > Wn)"
+PIC16_CPBLT: "Signed Compare Wb with Wn, Branch if Less Than (Wb < Wn)"
+
+// Program Flow Instructions
+PIC16_BRA: "Branch unconditionally/conditionally"
+PIC16_CALL: "Call Subroutine | Call Indirect Subroutine"
+PIC16_GOTO: "Unconditional Jump"
+PIC16_RCALL: "Relative Call | Relative Call"
+PIC16_REPEAT: "Repeat next instruction"
+PIC16_RETFIE: "Return from Interrupt"
+PIC16_RETLW: "Return with Literal in Wn"
+PIC16_RETURN: "Return"
+// Only for dsPIC
+PIC16_DO:  "Initialize Hardware Loop"
+
+// Shadow/Stack Instructions
+PIC16_LNK: "Allocate Stack Frame"
+PIC16_POP: "Pop TOS | Pop Shadow Registers"
+PIC16_PUSH: "Push to TOS | Push Shadow Registers"
+PIC16_ULNK: "De-allocate Stack Frame"
+
+// Control Instructions
+PIC16_CLRWDT: "Clear Watchdog Timer"
+PIC16_DISI: "Disable Interrupts Temporarily"
+PIC16_NOP: "No operation"
+PIC16_NOPR: "No operation"
+PIC16_PWRSAV: "Enter Power Saving Mode"
+PIC16_RESET: "Reset"
+
+// DSP Instructions [Only for dsPIC30F, dsPIC33F and dsPIC33E]
+PIC16_LAC: "Load Accumulator"
+PIC16_SAC: "Store Accumulator"
+PIC16_SFTAC: "Arithmetic Shift Accumulator"
+PIC16_CLR1: "Clear Accumulator, Prefetch Operands"
+PIC16_ED: "Euclidean Distance (No Accumulate)"
+PIC16_EDAC: "Euclidean Distance"
+PIC16_MAC: "Multiply and Accumulate"
+PIC16_MOVSAC: "Prefetch Operands and Store Accumulator"
+PIC16_MPY: "Multiply to Accumulator"
+PIC16_MSC: "Multiply and Subtract from Accumulator"
+
+//ICD instructions
+PIC16_BREAK:        "ICD Break"
+PIC16_URUN:         "ICD Run"
+PIC16_SSTEP:        "ICD Single Step"
+PIC16_FEX:          "ICD Execute"
+

@@ -1,0 +1,9 @@
+ax ?
+  0: " GETSEC[CAPABILITIES] - Report the SMX Capabilities\nThe capabilities index is input in EBX with the result returned in EAX"
+  2: " GETSEC[ENTERACCS] - Enter authenticated code execution mode.\nEBX holds the authenticated code module physical base\naddress. ECX holds the authenticated code module size (bytes)."
+  3: " GETSEC[EXITAC] - Exit authenticated code execution mode.\nRBX(EBX) holds the Near Absolute Indirect jump target and EDX holds\nthe exit parameter flags."
+  4: " GETSEC[SENTER] - Launch a measured environment\nEBX holds the SINIT authenticated code module physical\nbase address.\nECX holds the SINIT authenticated code module size\n(bytes).\nEDX controls the level of functionality supported by the\nmeasured environment launch."
+  5: " GETSEC[SEXIT] - Exit measured environment"
+  6: " GETSEC[PARAMETERS] - Report the SMX Parameters\nThe parameters index is input in EBX with the result\nreturned in EAX, EBX, and ECX."
+  7: " GETSEC[SMCTRL] - SMX Mode Control\nPerform specified SMX mode control as selected\nwith the input EBX."
+  8: " GETSEC[WAKEUP] - Wake up sleeping processors in measured environment."

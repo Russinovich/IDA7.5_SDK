@@ -1,0 +1,826 @@
+//-------------------------------------------------------------------------
+//
+//	I/O port information for IDA.
+//
+//		Created 6-Oct-1991 by Guilfanov I.
+//
+//-------------------------------------------------------------------------
+
+op1 ?
+//0x000 || - too frequent value
+
+	0x0c0:	"DMA controller, 8237A-5.\n"
+		"channel 0 base address\n(also sets current address)"
+0x001 || 0x0c1: "DMA controller, 8237A-5.\n"
+		"channel 0 base address and word count"
+0x002 || 0x0c2: "DMA controller, 8237A-5.\n"
+		"channel 1 base address\n(also sets current address)"
+0x003 || 0x0c3: "DMA controller, 8237A-5.\n"
+		"channel 1 base address and word count"
+0x004 || 0x0c4: "DMA controller, 8237A-5.\n"
+		"channel 2 base address\n(also sets current address)"
+0x005 || 0x0c5: "DMA controller, 8237A-5.\n"
+		"channel 2 base address and word count"
+0x006 || 0x0c6: "DMA controller, 8237A-5.\n"
+		"channel 3 base address\n(also sets current address)"
+0x007 || 0x0c7: "DMA controller, 8237A-5.\n"
+		"channel 3 base address and word count"
+
+
+0x008 || 0x0c8: "DMA 8237A-5. cmd reg bits:\n"
+		"0: enable mem-to-mem DMA\n"
+		"1: enable Ch0 address hold\n"
+		"2: disable controller\n"
+		"3: compressed timing mode\n"
+		"4: enable rotating priority\n"
+		"5: extended write mode; 0=late write\n"
+		"6: DRQ sensing - active high\n"
+		"7: DACK sensing - active high"
+
+0x009 || 0x0c9: "DMA controller, 8237A-5.\n"
+		"request register bits:\n"
+		"0-1: select channel (00=0; 01=1; 10=2; 11=3)\n"
+		"2: 1=set request bit for channel; 0=reset request"
+
+0x00a || 0x0ca:  "DMA controller, 8237A-5.\n"
+		"single mask bit register\n"
+		"0-1: select channel (00=0; 01=1; 10=2; 11=3)\n"
+		"2: 1=set mask for channel; 0=clear mask (enable)"
+
+0x00b || 0x0cb:  "DMA 8237A-5. mode register bits:\n"
+	"0-1: channel (00=0; 01=1; 10=2; 11=3)\n"
+	"2-3: transfer type (00=verify=Nop; 01=write; 10=read)\n"
+	"4: 1=enable auto-initialization\n"
+	"5: 1=address increment; 0=address decrement\n"
+	"6-7: 00=demand mode; 01=single; 10=block; 11=cascade"
+
+
+0x00c || 0x0cc:  "DMA controller, 8237A-5.\n"
+	"clear byte pointer flip-flop."
+
+0x00d || 0x0cd: "DMA controller, 8237A-5.\n"
+		"master clear.\n"
+	       "Any OUT clears the ctrlr (must be re-initialized)"
+0x00e || 0x0ce:  "DMA controller, 8237A-5.\n"
+	"Clear mask registers.\n"
+	"Any OUT enables all 4 channels."
+
+0x00f || 0x0cf: "DMA controller, 8237A-5.\n"
+		"master clear. Clear or mask any or\n"
+		"all of the channels. Bits:\n"
+		"0: 1=mask channel 0; 0=enable\n"
+		"1: 1=mask channel 1;\n"
+		"2: 1=mask channel 2;\n"
+		"3: 1=mask channel 3;"
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x020 || 0x21:
+
+	"Interrupt controller, 8259A."
+
+0x02E || 0x4E: "Super I/O Enable/Index Register" { op2 ?
+	0x55 || 0x83: "\nEnter configuration phase."
+	0xAA: "\nExit configuration phase."
+      }
+
+0x02F || 0x4F:
+
+        "Super I/O Data Register"
+
+0x040 || 0x41 || 0x42 || 0x43:
+
+	"Timer 8253-5 (AT: 8254.2)."
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x061:  "PC/XT PPI port B bits:\n"
+		"0: Tmr 2 gate ═╦═► OR 03H=spkr ON\n"
+		"1: Tmr 2 data ═╝  AND 0fcH=spkr OFF\n"
+		"3: 1=read high switches\n"
+		"4: 0=enable RAM parity checking\n"
+		"5: 0=enable I/O channel check\n"
+		"6: 0=hold keyboard clock low\n"
+		"7: 0=enable kbrd"
+
+0x062:  "PC/XT PPI port C. Bits:\n"
+		"0-3: values of DIP switches\n"
+		"5: 1=Timer 2 channel out\n"
+		"6: 1=I/O channel check\n"
+		"7: 1=RAM parity check error occurred."
+
+0x063:  "PC/XT PPI Command/Mode Register.\n"
+	"Selects which PPI ports are input or output.\n"
+	"BIOS sets to 99H (Ports A and C are input, B is output)."
+
+// 	AT Keyboard controller 8042:
+
+0x060:	"8042 keyboard controller data register." { op2 ?
+	0xff: "\nReset the keyboard and start internal diagnostics"
+	0xfe: "\nResend the last transmission"
+	0xf6: "\nSet keyboard to defaults and continue scanning"
+	0xf5: "\nSet keyboard to defaults and disable keyboard scanning"
+	0xf4: "\nEnable the keyboard.\nKybd sends 'ACK', clears buffer, and starts scanning"
+	0xf3: "\nSet rate and delay.\nFirst send 0f3H, then send data bits:\n"
+		"bits 0-4 repeat rate\n"
+		"bits 5-6 initial delay before first repeat:\n"
+		"  00=250ms; 01=500ms; 10=750ms; 11=1000ms\n"
+	0xee: "\nEcho. Diagnostics aid.\nSimply sends 0eeH right back."
+	0xed: "\nTurn LED 'lock key' lights on or off.\nFirst send 0edH, then send byte:\n"
+		"ScrollLock light 01H=turn on\n"
+		"NumLock light    02H=turn on\n"
+		"CapsLock light   04H=turn on"
+     }
+0x064:  "8042 keyboard controller command register." { op2 ?
+        0x20: "\nRead command byte:\n"
+              "7:          (reserved)\n"
+              "6:  XLAT    convert Set 2 scancodes to Set 1 (IBM PC compatibility mode)\n"
+              "5:  XT      1=translate codes like XT keyboard, 0=like AT\n"
+              "4:  _EN     1=disable keyboard\n"
+              "3:  OVR     1=override inhibit keyswitch\n"
+              "2:  SYS     System Flag (0=cold reboot, 1=warm reboot)\n"
+              "1:          (reserved)\n"
+              "0:  INT     enables IRQ 1 interrupt on keyboard IBF\n"
+        0x21 || 0x22 || 0x23 || 0x24 || 0x25 || 0x26 || 0x27 || 0x28 ||
+        0x29 || 0x2a || 0x2b || 0x2c || 0x2d || 0x2e || 0x2f || 0x30 ||
+        0x31 || 0x32 || 0x33 || 0x34 || 0x35 || 0x36 || 0x37 || 0x38 ||
+        0x39 || 0x3a || 0x3b || 0x3c || 0x3d || 0x3e || 0x3f:
+              "\nRead 8042 RAM (address = bits 0-5)"
+        0x60: "\nWrite command byte (next byte to port 60h):\n"
+              "7:          (reserved)\n"
+              "6:  XLAT    convert Set 2 scancodes to Set 1 (IBM PC compatibility mode)\n"
+              "5:  XT      1=translate codes like XT keyboard, 0=like AT\n"
+              "4:  _EN     1=disable keyboard\n"
+              "3:  OVR     1=override inhibit keyswitch\n"
+              "2:  SYS     System Flag (0=cold reboot, 1=warm reboot)\n"
+              "1:          (reserved)\n"
+              "0:  INT     enables IRQ 1 interrupt on keyboard IBF\n"
+        0x61 || 0x62 || 0x63 || 0x64 || 0x65 || 0x66 || 0x67 || 0x68 ||
+        0x69 || 0x6a || 0x6b || 0x6c || 0x6d || 0x6e || 0x6f || 0x70 ||
+        0x71 || 0x72 || 0x73 || 0x74 || 0x75 || 0x76 || 0x77 || 0x78 ||
+        0x79 || 0x7a || 0x7b || 0x7c || 0x7d || 0x7e || 0x7f:
+              "\nRead 8042 RAM (address = bits 0-5)"
+        0xAA: "\nController self-test.\nReturns 55h on success, 0FCh on failure"
+        0xAB: "\nKeyboard interface test.\nReturns 0h on success"
+        0xAC: "\nDiagnostic dump."
+        0xAD: "\nDisable keyboard."
+        0xAE: "\nEnable keyboard."
+        0xC0: "\nRead input port."
+        0xD0: "\nRead output port:\n"
+              "7:  1=keyboard data line pulled low (inhibited)\n"
+              "6:  1=keyboard clock line pulled low (inhibited)\n"
+              "5:  enables IRQ 12 interrupt on mouse IBF\n"
+              "4:  enables IRQ 1 interrupt on keyboard IBF\n"
+              "3:  1=mouse clock line pulled low (inhibited)\n"
+              "2:  1=mouse data line pulled low (inhibited)\n"
+              "1:  A20 gate on/off\n"
+              "0:  reset the PC (THIS BIT SHOULD ALWAYS BE SET TO 1)"
+        0xD1: "\nWrite output port (next byte to port 60h):\n"
+              "7:  1=keyboard data line pulled low (inhibited)\n"
+              "6:  1=keyboard clock line pulled low (inhibited)\n"
+              "5:  enables IRQ 12 interrupt on mouse IBF\n"
+              "4:  enables IRQ 1 interrupt on keyboard IBF\n"
+              "3:  1=mouse clock line pulled low (inhibited)\n"
+              "2:  1=mouse data line pulled low (inhibited)\n"
+              "1:  A20 gate on/off\n"
+              "0:  reset the PC (THIS BIT SHOULD ALWAYS BE SET TO 1)"
+        0xE0: "\nRead test inputs (T0 and T1)."
+        0xF0 || 0xF1 || 0xF2 || 0xF3 || 0xF4 || 0xF5 || 0xF6 || 0xF7 ||
+        0xF8 || 0xF9 || 0xFA || 0xFB || 0xFC || 0xFD || 0xFE || 0xFF:
+             "\nPulse output port.\nBits 0-3 indicate ports to pulse."
+     }
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x70 || 0x074: "CMOS Memory/RTC Index Register:" { op2 ?
+	0x00:   "\nRTC Seconds"
+	0x01:   "\nRTC Seconds Alarm"
+	0x02:   "\nRTC Minutes"
+	0x03:   "\nRTC Minutes Alarm"
+	0x04:   "\nRTC Hours"
+	0x05:   "\nRTC Hours Alarm"
+	0x06:   "\nRTC Day of Week"
+	0x07:   "\nRTC Day of Month"
+	0x08:   "\nRTC Month"
+	0x09:   "\nRTC Year"
+	0x0A:   "\nRTC Register A"
+	0x0B:   "\nRTC Register B"
+	0x0C:   "\nRTC Register C"
+	0x0D:   "\nRTC Register D"
+	0x0E:   "\nPOST diagnostics status byte"
+	0x0F:   "\nshutdown status byte"
+	0x10:   "\ndiskette drive type"
+	0x12:   "\nhard disk types (if < 15)"
+	0x13:   "\nsecurity functions"
+	0x14:   "\nequipment byte"
+	0x15 || 0x16: "\nBase memory size"
+	0x17 || 0x18: "\nextended memory above 1M"
+	0x19:   "\nHard drive 1, primary controller"
+	0x1a:   "\nHard drive 2, primary controller"
+	0x1b:   "\nHard drive 1, secondary controller"
+	0x1c:   "\nHard drive 2, secondary controller"
+	0x1d:   "\nEnhanced hard drive support"
+	0x1f:   "\nPower management functions"
+	0x24:   "\nSystem board ID"
+	0x25:   "\nSystem architecture data"
+	0x26:   "\nAuxiliary peripheral configuration"
+	0x27:   "\nSpeed control external drive"
+	0x28:   "\nExpanded/base mem. size, IRQ12"
+	0x29:   "\nMiscellaneous configuration"
+	0x2A:   "\nHard drive timeout"
+	0x2B:   "\nSystem inactivity timeout"
+	0x2C:   "\nMonitor timeout, Num Lock Cntrl"
+	0x2D:   "\nAdditional flags"
+	0x2e || 0x2f: "\nstorage for  checksum of CMOS addresses 10H through 20H"
+	0x30 || 0x31: "\nextended memory above 1M"
+	0x32:   "\ncurrent century in BCD (eg, 19H)"
+	0x33:   "\nmiscellaneous info."
+	0x34:   "\nunknown address"
+     }
+
+0x071 || 0x075: "CMOS Memory/RTC Data Register"
+0x072 || 0x076: "CMOS Memory/RTC Index Register (Extended RAM)"
+0x073 || 0x077: "CMOS Memory/RTC Data Register (Extended RAM)"
+
+0x080:	"manufacture's diagnostic checkpoint (POST code)"
+
+0x081:  "DMA page register 74LS612:\n"
+	"Channel 2 (diskette DMA)  (address bits 16-23)"
+0x082:  "DMA page register 74LS612:\n"
+	"Channel 3 (hard disk DMA) (address bits 16-23)"
+0x083:  "DMA page register 74LS612:\n"
+	"Channel 1 (address bits 16-23)"
+0x087:  "DMA page register 74LS612:\n"
+	"Channel 0 (address bits 16-23)"
+0x089:  "DMA page register 74LS612:\n"
+	"Channel 6 (address bits 17-23)"
+0x08b:  "DMA page register 74LS612:\n"
+	"Channel 5 (address bits 17-23)"
+0x08a:  "DMA page register 74LS612:\n"
+	"Channel 7 (address bits 17-23)"
+0x08f:  "DMA page register 74LS612:\n"
+	"refresh"
+
+0x092:  "PS/2 System Control Port A\n"
+        "1: A20 address line (1=active)\n"
+        "0: Alternate CPU reset (to effect mode switch from\n"
+        "   Protected Virtual Address Mode to Real Address Mode)."
+
+0x0a0:  "PIC 2  same as 0020 for PIC 1"
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x0B2:  "Advanced Power Management Control Port\n"
+        "generates SMI interrupt if APMC_EN bit is set"
+
+0x0B3:  "Advanced Power Management Status Port (OS <-> SMI scratchpad)"
+
+        0xA1 || 0xA2 || 0xA3 || 0xA4 || 0xA5 || 0xA6 || 0xA7 ||
+0xA8 || 0xA9 || 0xAA || 0xAB || 0xAC || 0xAD || 0xAE || 0xAF ||
+0xB0 || 0xB1 ||                 0xB4 || 0xB5 || 0xB6 || 0xB7 ||
+0xB8 || 0xB9 || 0xBA || 0xBB || 0xBC || 0xBD || 0xBE || 0xBF:
+	  "Interrupt Controller #2, 8259A"
+
+0x0eb:  "delay for I/O access"
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x0f0:  "AT 80287 latch clear.\n"
+	"'Busy' gets latched upon an unmasked 287 error."
+
+0x0f1:  "AT 80287 Reset.\n"
+	"Coprocessor is reset from protected mode to real mode"
+
+0x0F8 || 0xF9 || 0xFA || 0xFB || 0xFC:
+
+	"AT 80287 data.\n286 sends opcodes & operands and receives results."
+
+// "▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+
+0x1f0 || 0x170:  "AT hard disk controller: Data register.\nRead/write data from/to controller sector buffer"
+0x1f1 || 0x171: "AT hard disk controller\n"
+		"Write Precompensation register.\n"
+		"Turn on write precompensation."
+
+0x1f2 || 0x172:  "AT hard disk controller:\nSector count.\nRead/Write count of sectors for operation"
+0x1f3 || 0x173:  "AT hard disk controller:\nSector number.\nRead/Write current/starting logical sector number"
+0x1f4 || 0x174:  "AT hard disk controller:\nCylinder high (bits 0-1 are bits 8-9 of 10-bit cylinder number)"
+0x1f5 || 0x175:  "AT hard disk controller:\nCylinder low (bits 0-7 of 10-bit cylinder number)"
+0x1f6 || 0x176:  "AT hard disk controller:\nDrive & Head.\nRead/Write: bits indicate head, drive for operation"
+
+0x1f7 || 0x177: "AT hard disk\n"
+		"command register:\n"
+		"1?H = Restore to cylinder 0\n"
+		"7?H = Seek to cylinder\n"
+		"2?H = Read sector\n"
+		"3xH = Write sector\n"
+		"50H = Format track\n"
+		"4xH = verify read\n"
+		"90H = diagnose\n"
+		"91H = set parameters for drive"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+0x201:	"Game I/O port\n"
+	"bits 0-3: Coordinates (resistive, time-dependent inputs)\n"
+	"bits 4-7: Buttons/Triggers (digital inputs)"
+
+0x200 ||	  0x202 || 0x203 || 0x204 || 0x205 || 0x206 || 0x207 ||
+0x208 || 0x209 || 0x20A || 0x20B || 0x20C || 0x20D || 0x20E || 0x20F:
+
+		"Game I/O port"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x210:  "XT Expansion chassis control port"
+0x213:  "XT Expansion chassis enable"
+0x215:  "XT Expansion chassis data bus register"
+0x215:  "XT Expansion chassis address register (high byte)"
+0x216:  "XT Expansion chassis address register (low byte)"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x278 || 0x378 || 0x3BC:"Printer Data Latch:\n"
+			"send byte to printer"
+
+0x27a || 0x37a || 0x3BE:  "Printer Control Bits:\n"
+		"0: 1 when sending byte\n"
+		"1: 1 causes LF after CR\n"
+		"2: 0 resets the printer\n"
+		"3: 1 selects the printer\n"
+		"4: +IRQ Enable"
+
+0x279 || 0x379 || 0x3BF:  "Printer Status Bits:\n"
+		"3: 0=printer signals an error\n"
+		"4: 1=printer is selected\n"
+		"5: 1=out of paper\n"
+		"6: 0=ready for next character\n"
+		"7: 0=busy or offline or error"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x2c0 || 0x3c0:  "EGA: " { op2 ?
+	0x00 || 0x20 ||
+	0x01 || 0x21 ||
+	0x02 || 0x22 ||
+	0x03 || 0x23 ||
+	0x04 || 0x24 ||
+	0x05 || 0x25 ||
+	0x06 || 0x26 ||
+	0x07 || 0x27 ||
+	0x08 || 0x28 ||
+	0x09 || 0x29 ||
+	0x0A || 0x2A ||
+	0x0B || 0x2B ||
+	0x0C || 0x2C ||
+	0x0D || 0x2D ||
+	0x0E || 0x2E ||
+	0x0F || 0x2F:
+			"palette register: select colors for attribute AL:\n"
+			"0: RED\n"
+			"1: GREEN\n"
+			"2: BLUE\n"
+			"3: blue\n"
+			"4: green\n"
+			"5: red"
+	0x10 || 0x30: "mode control bits:\n"
+			"0: 1=graph modes, 0=text\n"
+			"1: 1=MDA\n"
+			"2: 1=9th dot=8th dot for line/box chars\n"
+			"   0=use bkgd colr as 9th dot of char\n"
+			"3: 1=enable blink, 0=allow 4-bit bkgd"
+	0x11 || 0x31: "select overscan (border) color.\nSame rgbRGB as palette regs"
+	0x12 || 0x32: "enable color planes\n"
+			"bits 0-3: set bits to enable color planes 0-3\n"
+			"bits 4-5: video status to multiplex\n"
+			"          00=R&B, 01=b&G, 10=r&g, 11=unused"
+
+	0x13 || 0x33: "horizontal pixel panning:\n"
+	      "Number of dots to shift data left.\n"
+	      "Bits 0-3 valid (0-0fH)"
+	other:		"unknown data port"
+    }
+
+0x2c2 || 0x3c2:  "EGA : misc cntl\n"
+	"0: 1=select 3BxH\n"
+	"1: 1=enable RAM\n"
+	"2-3: Dot clock\n"
+	"5: Page bit for odd/even mode\n"
+	"6: Horiz retrace polarity: 1=neg, 0=pos\n"
+	"7: Vert retrace polarity: 1=neg, 0=pos"
+
+0x2C4 || 0x3C4:  "EGA: sequencer address reg\n" { op2 ?
+	0x00: "sequencer reset.\n"
+              "Bits of data 0-1 indicate asynchronous/synchronous reset."
+	0x01: "clocking mode. Data bits:\n"
+		"0: 1=8 dots/char; 0=9 dots/char\n"
+		"1: CRT bandwidth: 1=low; 0=high\n"
+		"2: 1=shift every char; 0=every 2nd char\n"
+		"3: dot clock: 1=halved"
+	0x02: "map mask: data bits 0-3 enable writes to bit planes 0-3"
+	0x03: "character map select:\n"
+		"bits of data 0-1 select Map B (for when attribute bit 3=0)\n"
+		"bits of data 2-3 select Map A (for when attribute bit 3=1)"
+	0x04: "memory mode. Data bits:\n"
+		"0: 1=text char generator; 0=graphics\n"
+		"1: 1=EGA ram > 64K; 0=64K\n"
+		"2: 1=sequential; 0=odd/even"
+	other: "unknown register"
+	}
+0x2c5 || 0x3c5:  "EGA port: sequencer data register"
+0x2ca || 0x3ca:  "EGA port: graphics 2 position (must be 0 for EGA)"
+0x2cc || 0x3cc:  "EGA port: graphics 1 position (must be 1 for EGA)"
+0x2ce || 0x3ce:  "EGA: graph 1 and 2 addr reg:\n" { op2 ?
+	0x00: "set/reset.\nData bits 0-3 select planes for write mode 00"
+	0x01: "enable set/reset"
+	0x02: "color compare.\nData bits 0-3 select color for read mode 01"
+	0x03: "data rotate and function select for write mode 00. Bits:\n"
+		"0-2: set rotate count for write mode 00\n"
+		"3-4: fn for write modes 00 and 02\n"
+		"     00=no change; 01=AND; 10=OR; 11=XOR"
+	0x04: "read map select.\nData bits 0-2 select map # for read mode 00."
+	0x05: "mode register.Data bits:\n"
+		"0-1: Write mode 0-2\n"
+		"2: test condition\n"
+		"3: read mode: 1=color compare, 0=direct\n"
+		"4: 1=use odd/even RAM addressing\n"
+		"5: 1=use CGA mid-res map (2-bits/pixel)"
+	0x06: "miscellaneous graphics control.Data bits:\n"
+		"0: 1=graphics; 0=enable char gen (text)\n"
+		"1: 1=chain odd maps after even maps\n"
+		"2: memory mapping for CPU\n"
+		"   00=a000H (128K);   01=a000H (64K)\n"
+		"   10=b000H (32K MDA);11=b800H (32K CGA)"
+	0x07: "color masking disable\n"
+	      "bits 0-3 disable planes from compare logic in read mode 01"
+	0x08: "bit mask\nBits 0-7 select bits to be masked in all planes"
+	other: "unknown register"
+      }
+0x2cf || 0x3cf: "EGA port: graphics controller data register"
+0x3b4 || 0x3d4: "Video: CRT cntrlr addr\n" { op2 ?
+	0x00: "horizontal total"
+	0x02: "start horizontal blanking (character count)"
+	0x03: "end horizontal blanking\n"
+	      "bits 0-4 are blank width; bits 5-6 are skew enable (0 to 3)"
+	0x04: "start horizontal retrace (character position)"
+	0x05: "end horizontal retrace. Data bits:\n"
+		"0-4: horizontal retrace width\n"
+		"5-6: retrace delay 0-3 character-clocks\n"
+		"7: 1=start panning on odd addr; 0=even"
+	0x06: "vertical total (scan lines)"
+	0x07: "bit 8 for certain CRTC regs. Data bits:\n"
+		"0: vertical total (Reg 06)\n"
+		"1: vert disp'd enable end (Reg 12H)\n"
+		"2: vert retrace start (Reg 10H)\n"
+		"3: start vert blanking (Reg 15H)\n"
+		"4: line compare (Reg 18H)\n"
+		"5: cursor location (Reg 0aH)"
+	0x08: "preset row scan first scan line after vertical retrace"
+	0x09: "maximum scan line"
+	0x0a: "cursor start"
+	0x0b: "cursor end"
+	0x0c: "regen start address (high)"
+	0x0d: "regen start address (low)"
+	0x0e: "Cursor location (high)"
+	0x0f: "Cursor location (low)"
+	0x10: "vertical retrace start"
+	0x11: "vertical retrace end. Data bits:\n"
+		"0-3: retrace width in scan lines\n"
+		"4: 0=clear vertical interrupt\n"
+		"5: 0=enable vertical interrupt IRQ2"
+	0x12: "vertical displayed end (scan line)"
+	0x13: "vertical displayed adjustment"
+	0x14: "underline location.  Bits 0-5 are scan line number."
+	0x15: "start vertical blanking (scan line)"
+	0x16: "end vertical blanking"
+	0x17: "mode control.Data bits:\n"
+		"0:0=CGA compatible\n"
+		"1:select row scan counter\n"
+		"2:hor retrace:1=double vert res\n"
+		"3:1=use char clock/2 for word refresh\n"
+		"4:1=high impedance on output\n"
+		"5:addr wrapping mode\n"
+		"6:1=byte,0=word mode\n"
+		"7:0=hardware reset"
+	0x18: "line compare (scan line). Used for split screen operations."
+     }
+0x3b5 || 0x3d5: "Video: CRT controller internal registers"
+
+0x3ba || 0x3da:  "Video: bits 0-1 control\n"
+		 "Feature Control outputs FC0 and FC1"
+
+0x3bb || 0x3db:  "Video: light pen latch reset.\nAny OUT clears the latch."
+0x3bc || 0x3dc:  "Video: light pen latch set.\nAny OUT arms the latch."
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x2e8 || 0x3e8 || 0x2f8 || 0x3f8: 
+		"COM: transmitter holding register\n"
+		"or (when DLAB=1) divisor latch low byte."
+
+0x2e9 || 0x3e9 || 0x2f9 || 0x3f9: 
+		"COM: divisor latch high byte(when DLAB=1)\n"
+		"or interrupt enable register bits:\n"
+		"0:1=an interrupt when rec'd data is available\n"
+		"1:1=interrupt when transmit buffer is empty\n"
+		"2:1=int on rec'r line status (error or break)\n"
+		"3:1=int on modem status (CTS,DSR,RI,RLSD)"
+
+0x2ea || 0x3ea || 0x2fa || 0x3fa: 
+		"COM: interrupt identification register bits:\n"
+		"0: 1=no interrupt pending\n"
+		"1: 00=receiver line status interrupt.  Occurs upon:\n"
+		"      overrun, parity, or framing error, or break\n"
+		"   01=received data available\n"
+		"   10=transmitter buffer empty\n"
+		"   11=modem status."
+
+0x2eb || 0x3eb || 0x2fb || 0x3fb: 
+		"COM: line control register bits:\n"
+		"0-1: word length: 00=5, 01=6, 10=7, 11=8\n"
+		"2:   stop bits: 0=1,1=2\n"
+		"3-4: parity: x0=None, 01=Odd, 11=Even\n"
+		"5:   stuck parity\n"
+		"6:   enable break control. 1=start sending 0s (spaces)\n"
+		"7:   DLAB (Divisor Latch Access Bit)"
+
+0x2ec || 0x3ec || 0x2fc || 0x3fc: 
+		"COM: modem control reg bits:\n"
+		"0: 1=activate -DTR (-data termnl ready), 0=deactivate\n"
+		"1: 1=activate -RTS (-request to send), 0=deactivate\n"
+		"2: 1=activate -OUT1 (spare, user-designated output)\n"
+		"3: 1=activate -OUT2\n"
+		"4: 1=activate loopback for diagnostic testing"
+
+0x2ed || 0x3ed || 0x2fd || 0x3fd: 
+		"COM: line status register bits:\n"
+		"0: 1=data ready (DR)\n"
+		"1: 1=overrun error (OE)\n"
+		"2: 1=parity error (PE)\n"
+		"3: 1=Bad stop bit in character\n"
+		"4: 1=break indicated (BI)\n"
+		"5: 1=transmitter holding register empty\n"
+		"6: 1=transmitter empty"
+
+0x2ee || 0x3ee || 0x2fe || 0x3fe: 
+		"COM: modem status register\n"
+		"0: 1=Delta CTS changed\n"
+		"1: 1=Delta DSR changed\n"
+		"2: 1=Trailing Edge Ring Indicator (TERI) is active\n"
+		"3: 1=Delta DCD has changed\n"
+		"4: 1=CTS is active\n"
+		"5: 1=DSR is active\n"
+		"6: 1=Ring Indicator (RI) is active\n"
+		"7: 1=DCD is active"
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x320:  "XT Hard Disk: commands register"
+
+0x321:  "XT Hard Disk: controller reset"
+0x322:  "XT Hard Disk: generate controller select pulse"
+0x323:  "XT Hard Disk: DMA and interrupt mask register bits:\n"
+	"0: 1=enable DMA, 0=don't use DMA\n"
+	"1: 1=enable interrupt after ctrlr command (IRQ 5)"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x372 || 0x3F2:  "Floppy: digital output reg bits:\n"
+	"0-1: Drive to select 0-3 (AT: bit 1 not used)\n"
+	"2:   0=reset diskette controller; 1=enable controller\n"
+	"3:   1=enable diskette DMA and interrupts\n"
+	"4-7: drive motor enable.  Set bits to turn drive ON.\n"
+
+0x374 || 0x3F4:  "Floppy: main status reg bits:\n"
+	"0-3: diskette busy\n"
+	"4: 1=cntrlr busy\n"
+	"5: 1=non-DMA mode\n"
+	"6: Data dir: 1=cntrlr to CPU\n"
+	"7: 1=OK to snd/rcv cmd or data"
+
+0x375 || 0x3F5:  "Floppy: FDC command/data register." { op2 ?
+	0xe6: "\nRead data (expects 8 parms to follow; 7 results when done)"
+	0xc5: "\nWrite data (expects 8 parms to follow; 7 results when done)"
+	0x4d: "\nFormat track (expects 5 parms to follow; 7 results when done)"
+	0x07: "\nRecalibrate (expects 1 parm to follow; no results when done)"
+	0x0f: "\nSeek Track (expects 2 parms to follow; no results when done)"
+	}
+
+0x376 || 0x3F6:  "AT only. Fixed disk register"
+0x377 || 0x3F7:  "Floppy disk: AT diskette control register bits:\n"
+		"0-1: data transfer rate\n"
+		"     00=500 KBS, 01=300 KBS, 10=250 KBS, 11=reserved"
+
+0xCF8: "PCI Configuration Space Address Register\n"
+       "bits   7..0: configuration space offset\n"
+       "bits  10..8: function number\n"
+       "bits 15..11: device number\n"
+       "bits 23..16: bus number"
+
+0xC7C: "Machine ID"
+0xCF9: "Reset Control Register\n"
+       "3: Full Reset\n"
+       "2: Reset CPUn\n"
+       "1: System Reset"
+
+0xCFC: "PCI Configuration Space Data Register"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+// 386EX additions by Paul te Bokkel (Paul.te.Bokkel@invorm.nl)
+// See Intel 386EX user manual # 272485 (rev 02 = 27248502.pdf) for details
+// User manual is also included with AppBuilder, the Intel embedded cpu SDK.
+
+0xf000: "386EX: DMA controller, 8237A-5.\n"
+        "channel 0 base address\n(also sets current address)"
+0xf001: "386EX: DMA controller, 8237A-5.\n"
+        "channel 0 base address and word count"
+0xf002: "386EX: DMA controller, 8237A-5.\n"
+        "channel 1 base address\n(also sets current address)"
+0xf003: "386EX: DMA controller, 8237A-5.\n"
+        "channel 1 base address and word count"
+
+0xf008: "386EX: DMA 8237A-5. cmd reg bits:\n"
+        "0: enable mem-to-mem DMA\n"
+        "1: enable Ch0 address hold\n"
+        "2: disable controller\n"
+        "3: compressed timing mode\n"
+        "4: enable rotating priority\n"
+        "5: extended write mode; 0=late write\n"
+        "6: DRQ sensing - active high\n"
+        "7: DACK sensing - active high"
+
+0xf009: "386EX: DMA controller, 8237A-5.\n"
+        "request register bits:\n"
+        "0-1: select channel (00=0; 01=1; 10=2; 11=3)\n"
+        "2: 1=set request bit for channel; 0=reset request"
+
+0xf00a: "386EX: DMA controller, 8237A-5.\n"
+        "single mask bit register\n"
+        "0-1: select channel (00=0; 01=1; 10=2; 11=3)\n"
+        "2: 1=set mask for channel; 0=clear mask (enable)"
+
+0xf00b: "386EX: DMA 8237A-5. mode register bits:\n"
+        "0-1: channel (00=0; 01=1; 10=2; 11=3)\n"
+        "2-3: transfer type (00=verify=Nop; 01=write;10=read)\n"
+        "4: 1=enable auto-initialization\n"
+        "5: 1=address increment; 0=address decrement\n"
+        "6-7: 00=demand mode; 01=single; 10=block; 11=cascade"
+
+0xf00c: "386EX: DMA controller, 8237A-5.\n"
+        "clear byte pointer flip-flop."
+
+0xf00d: "386EX: DMA controller, 8237A-5.\n"
+        "master clear.\n"
+        "Any OUT clears the ctrlr (must be re-initialized)"
+
+0xf00e: "386EX: DMA controller, 8237A-5.\n"
+        "Clear mask registers.\n"
+        "Any OUT enables all 4 channels."
+
+0xf00f: "386EX: DMA controller, 8237A-5.\n"
+        "master clear. Clear or mask any or\n"
+        "all of the channels. Bits:\n"
+        "0: 1=mask channel 0; 0=enable\n"
+        "1: 1=mask channel 1;\n"
+        "2: 1=mask channel 2;\n"
+        "3: 1=mask channel 3;"
+
+
+0xf010: "386EX: DMA0REQ 0/1"
+0xf011: "386EX: DMA0REQ 2/3"
+0xf012: "386EX: DMA1REQ 0/1"
+0xf013: "386EX: DMA1REQ 2/3"
+0xf018: "386EX: DMABSR"
+0xf019: "386EX: DMACHR/DMAIS"
+0xf01a: "386EX: DMACMD2"
+0xf01b: "386EX: DMAMOD2"
+0xf01c: "386EX: DMAIEN"
+0xf01d: "386EX: DMAOVFE"
+0xf01e: "386EX: DMACLRTC (not a register)"
+0xf020 || 0xf021:       "386EX: Interrupt controller, 8259A."
+0xf040 || 0xf041 ||
+0xf042 || 0xf043:       "386EX: Timer 8253-5 (AT: 8254.2)."
+
+0xf083: "386EX: DMA page register 74LS612:\n"
+        "Channel 1 (address bits 16-23)"
+0xf085: "386EX: DMA1TAR3"
+0xf086: "386EX: DMA0TAR3"
+0xf087: "386EX: DMA page register 74LS612:\n"
+        "Channel 0 (address bits 16-23)"
+0xf098: "386EX: DMA0BYC2"
+0xf099: "386EX: DMA1BYC2"
+0xf092: "386EX: A20GATE"
+0xf0a0 || 0xf0a1: "386EX: slave interrupt controller"
+
+0xf400 || 0xf408 || 0xf410 || 0xf418 || 0xf420 || 0xf428 || 0xf430:
+        "386EX: chipselect address low\n"
+        "  bits 0-4: waitstates\n"
+        "  bit 8: address space type: 0 = I/O, 1 = memory\n"
+        "  bit 9: 0 = 8 bit, 1 = 16 bit bus cycles\n"
+        "  bits 11-15: bits 1-5 of base address (not 0-4!)\n"
+        "  Note: base is in bytes for I/O, kbytes for memory!"
+0xf402 || 0xf40a || 0xf412 || 0xf41a || 0xf422 || 0xf42a || 0xf432:
+        "386EX: chipselect address high\n"
+        "bits 0-9: bits 6-15 of base address"
+0xf404 || 0xf40c || 0xf414 || 0xf41c || 0xf424 || 0xf42c || 0xf434:
+        "386EX: chipselect mask low\n"
+        "  bit 0: chip enabled (0=no, 1=yes)\n"
+        "  bits 11-15: bits 1-5 of mask address (not 0-4!)\n"
+        "  Note: if complete mask has '10' in binairy form, the\n"
+        "  addresses are mirrored."
+0xf406 || 0xf40e || 0xf416 || 0xf41e || 0xf426 || 0xf42e || 0xf436:
+        "386EX: chipselect mask high\n"
+        "bits 0-9: bits 6-15 of mask address"
+
+0xf438: "386EX: chipselect address low (normally: ROM,\n"
+        "loaded from 0x40000000 - romsize"
+0xf43a: "386EX: chipselect address high (normally: ROM,\n"
+        "loaded from 0x40000000 - romsize"
+0xf43c: "386EX: chipselect mask low (normally: ROM,\n"
+        "loaded from 0x40000000 - romsize"
+0xf43e: "386EX: chipselect mask high (normally: ROM,\n"
+        "loaded from 0x40000000 - romsize"
+
+0xf480: "386EX: sync SIO: TBUF"
+0xf482: "386EX: sync SIO: RBUF"
+0xf484: "386EX: sync SIO: BAUD"
+0xf486: "386EX: sync SIO: CON1"
+0xf488: "386EX: sync SIO: CON2"
+0xf48a: "386EX: sync SIO: CTR"
+
+0xf4a0: "386EX: refresh control unit: BAD"
+0xf4a2: "386EX: refresh control unit: CIR"
+0xf4a4: "386EX: refresh control unit: CON"
+0xf4a6: "386EX: refresh control unit: ADD"
+
+0xf4c0: "386EX: Watchdog timer: RLDH"
+0xf4c2: "386EX: Watchdog timer: RLDL"
+0xf4c4: "386EX: Watchdog timer: CNTH"
+0xf4c6: "386EX: Watchdog timer: CNTL"
+0xf4c8: "386EX: Watchdog timer: CLR (not a register)"
+0xf4ca: "386EX: Watchdog timer: STATUS"
+
+
+0xf4f8 || 0xf8f8:       "386EX: COM: transmitter holding register\n"
+                        "or (when DLAB=1) divisor latch low byte."
+
+0xf4f9 || 0xf8f9:       "386EX: COM: divisor latch high byte(when DLAB=1)\n"
+                        "or interrupt enable register bits:\n"
+                        "0:1=an interrupt when rec'd data is available\n"
+                        "1:1=interrupt when transmit buffer is empty\n"
+                        "2:1=int on rec'r line status (error or break)\n"
+                        "3:1=int on modem status (CTS,DSR,RI,RLSD)"
+
+0xf4fa || 0xf8fa:       "386EX: COM: interrupt identification register bits:\n"
+                        "0: 1=no interrupt pending\n"
+                        "1: 00=receiver line status interrupt. Occurs upon:\n"
+                        "      overrun, parity, or framing error, or break\n"
+                        "   01=received data available\n"
+                        "   10=transmitter buffer empty\n"
+                        "   11=modem status."
+
+0xf4fb || 0xf8fb:       "386EX: COM: line control register bits:\n"
+                        "0-1: word length: 00=5, 01=6, 10=7, 11=8\n"
+                        "2:   stop bits: 0=1,1=2\n"
+                        "3-4: parity: x0=None, 01=Odd, 11=Even\n"
+                        "5:   stuck parity\n"
+                        "6:   enable break control. 1=start sending 0s (spaces)\n"
+                        "7:   DLAB (Divisor Latch Access Bit)"
+
+0xf4fc || 0xf8fc:       "386EX: COM: modem control reg bits:\n"
+                        "0: 1=activate -DTR (-data termnl ready), 0=deactivate\n"
+                        "1: 1=activate -RTS (-request to send), 0=deactivate\n"
+                        "2: 1=activate -OUT1 (spare, user-designated output)\n"
+                        "3: 1=activate -OUT2\n"
+                        "4: 1=activate loopback for diagnostic testing"
+
+0xf4fd || 0xf8fd:       "386EX: COM: line status register bits:\n"
+                        "0: 1=data ready (DR)\n"
+                        "1: 1=overrun error (OE)\n"
+                        "2: 1=parity error (PE)\n"
+                        "3: 1=Bad stop bit in character\n"
+                        "4: 1=break indicated (BI)\n"
+                        "5: 1=transmitter holding register empty\n"
+                        "6: 1=transmitter empty"
+
+0xf4fe || 0xf8fe:       "386EX: COM: modem status register\n"
+                        "0: 1=Delta CTS changed\n"
+                        "1: 1=Delta DSR changed\n"
+                        "2: 1=Trailing Edge Ring Indicator (TERI) is active\n"
+                        "3: 1=Delta DCD has changed\n"
+                        "4: 1=CTS is active\n"
+                        "5: 1=DSR is active\n"
+                        "6: 1=Ring Indicator (RI) is active\n"
+                        "7: 1=DCD is active"
+
+0xf4ff:                 "386EX: Async I/O com1: SCR0"
+
+
+
+0xf800: "386EX: power management"
+0xf804: "386EX: clock generation"
+
+0xf820 || 0xF822 || 0xF824 || 0xF826 ||
+0xf830 || 0xF832 || 0xF834 || 0xF836:
+        "386EX: device configuration registers"
+
+0xf860 || 0xf862 || 0xf864 || 0xf868 || 
+0xf86a || 0xf86c || 0xf870 || 0xf872 || 0xf874:
+        "386EX: parallel I/O ports"

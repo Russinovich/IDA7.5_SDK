@@ -1,0 +1,365 @@
+//-------------------------------------------------------------------------
+//
+//	I/O port information for IDA.
+//
+//		Created 6-Oct-1991 by Guilfanov I.
+//
+//-------------------------------------------------------------------------
+
+op2 ?
+	 0x0c0:	"DMA controller, 8237A-5.\n"
+        	"channel 0 current address"
+0x001 || 0x0c1: "DMA controller, 8237A-5.\n"
+	        "channel 0 current word count"
+0x002 || 0x0c2: "DMA controller, 8237A-5.\n"
+	        "channel 1 current address"
+0x003 || 0x0c3: "DMA controller, 8237A-5.\n"
+	        "channel 1 current word count"
+0x004 || 0x0c4: "DMA controller, 8237A-5.\n"
+	        "channel 2 current address"
+0x005 || 0x0c5: "DMA controller, 8237A-5.\n"
+	        "channel 2 current word count"
+0x006 || 0x0c6: "DMA controller, 8237A-5.\n"
+	        "channel 3 current address"
+0x007 || 0x0c7: "DMA controller, 8237A-5.\n"
+	        "channel 3 current word count"
+
+0x008 || 0x0c8: "DMA 8237A-5. status register bits:\n"
+		"0-3: channel 0-3 has reached terminal count\n"
+		"4-7: channel 0-3 has a request pending"
+
+0x009 || 0x0c9: "DMA controller, 8237A-5.\n"
+		"request register bits:\n"
+		"0-1: select channel (00=0; 01=1; 10=2; 11=3)\n"
+		"2: 1=set request bit for channel; 0=reset request"
+
+0x00a || 0x0ca:  "DMA controller, 8237A-5.\n"
+		"single mask bit register\n"
+		"0-1: select channel (00=0; 01=1; 10=2; 11=3)\n"
+		"2: 1=set mask for channel; 0=clear mask (enable)"
+
+0x00b || 0x0cb:  "DMA 8237A-5. mode register bits:\n"
+		"0-1: channel (00=0; 01=1; 10=2; 11=3)\n"
+		"2-3: transfer type (00=verify=Nop; 01=write; 10=read)\n"
+		"4: 1=enable auto-initialization\n"
+		"5: 1=address increment; 0=address decrement\n"
+		"6-7: 00=demand mode; 01=single; 10=block; 11=cascade"
+
+
+0x00c || 0x0cc: "DMA controller, 8237A-5.\n"
+		"clear byte pointer flip-flop."
+//0x00d || 0x0cd: "DMA controller, 8237A-5.\n"
+//		"temporary reg.\n"
+//		"Last byte in memory-to-memory xfer (not used)"
+0x00e || 0x0ce: "DMA controller, 8237A-5.\n"
+		"Clear mask registers.\n"
+		"Any OUT enables all 4 channels."
+//0x00f || 0x0cf: "DMA controller, 8237A-5.\n"
+//		"temporary reg.\n"
+//		"Last byte in memory-to-memory xfer (not used)"
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x020 || 0x21:
+
+	"Interrupt controller, 8259A."
+
+0x02F || 0x4F:
+
+        "Super I/O Data Register"
+
+0x040 || 0x41 || 0x42 || 0x43:
+
+	"Timer 8253-5 (AT: 8254.2)."
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x061:		"PC/XT PPI port B bits:\n"
+		"0: Tmr 2 gate ═╦═► OR 03H=spkr ON\n"
+		"1: Tmr 2 data ═╝  AND 0fcH=spkr OFF\n"
+		"3: 1=read high switches\n"
+		"4: 0=enable RAM parity checking\n"
+		"5: 0=enable I/O channel check\n"
+		"6: 0=hold keyboard clock low\n"
+		"7: 0=enable kbrd"
+
+0x062:		"PC/XT PPI port C. Bits:\n"
+		"0-3: values of DIP switches\n"
+		"5: 1=Timer 2 channel out\n"
+		"6: 1=I/O channel check\n"
+		"7: 1=RAM parity check error occurred."
+
+0x063:		"PC/XT PPI Command/Mode Register.\n"
+		"Selects which PPI ports are input or output.\n"
+		"BIOS sets to 99H (Ports A and C are input, B is output)."
+
+// 	AT Keyboard controller 8042:
+
+0x060:		"8042 keyboard controller data register"
+0x064:		"8042 keyboard controller status register\n"
+		"7:  PERR    1=parity error in data received from keyboard\n"
+		"   +----------- AT Mode ----------+------------ PS/2 Mode ------------+\n"
+    		"6: |RxTO    receive (Rx) timeout  | TO      general timeout (Rx or Tx)|\n"
+		"5: |TxTO    transmit (Tx) timeout | MOBF    mouse output buffer full  |\n"
+		"   +------------------------------+-----------------------------------+\n"
+		"4:  INH     0=keyboard communications inhibited\n"
+		"3:  A2      0=60h was the port last written to, 1=64h was last\n"
+		"2:  SYS     distinguishes reset types: 0=cold reboot, 1=warm reboot\n"
+		"1:  IBF     1=input buffer full (keyboard can't accept data)\n"
+		"0:  OBF     1=output buffer full (data from keyboard is available)"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x070 || 0x074: "CMOS Memory/RTC Index Register"
+0x071 || 0x075: "CMOS Memory/RTC Data Register"
+0x072 || 0x076: "CMOS Memory/RTC Index Register (Extended RAM)"
+0x073 || 0x077: "CMOS Memory/RTC Data Register (Extended RAM)"
+
+0x080:		"manufacture's diagnostic checkpoint"
+
+0x081:  	"DMA page register 74LS612:\n"
+		"Channel 2 (diskette DMA)  (address bits 16-23)"
+0x082:  	"DMA page register 74LS612:\n"
+		"Channel 3 (hard disk DMA) (address bits 16-23)"
+0x083:  	"DMA page register 74LS612:\n"
+		"Channel 1 (address bits 16-23)"
+0x087:  	"DMA page register 74LS612:\n"
+		"Channel 0 (address bits 16-23)"
+0x089:  	"DMA page register 74LS612:\n"
+		"Channel 6 (address bits 17-23)"
+0x08b:  	"DMA page register 74LS612:\n"
+		"Channel 5 (address bits 17-23)"
+0x08a:  	"DMA page register 74LS612:\n"
+		"Channel 7 (address bits 17-23)"
+0x08f:  	"DMA page register 74LS612:\n"
+		"refresh"
+
+0x092:          "PS/2 System Control Port A\n"
+                "1: A20 address line (1=active)\n"
+                "0: Alternate CPU reset (to effect mode switch from\n"
+                "   Protected Virtual Address Mode to Real Address Mode)."
+0x0a0:		"PIC 2  same as 0020 for PIC 1"
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+        0xA1 || 0xA2 || 0xA3 || 0xA4 || 0xA5 || 0xA6 || 0xA7 ||
+0xA8 || 0xA9 || 0xAA || 0xAB || 0xAC || 0xAD || 0xAE || 0xAF ||
+0xB0 || 0xB1 ||                 0xB4 || 0xB5 || 0xB6 || 0xB7 ||
+0xB8 || 0xB9 || 0xBA || 0xBB || 0xBC || 0xBD || 0xBE || 0xBF:
+
+	  "Interrupt Controller #2, 8259A"
+
+0x0B2:  "Advanced Power Management Control Port"
+0x0B3:  "Advanced Power Management Status Port (OS <-> SMI scratchpad)"
+
+// ■■■■  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+0x0f0:  "AT 80287 latch clear.\n"
+	"'Busy' gets latched upon an unmasked 287 error."
+
+0x0f1:  "AT 80287 Reset.\n"
+	"Coprocessor is reset from protected mode to real mode"
+
+0x0F8 || 0xF9 || 0xFA || 0xFB || 0xFC:
+
+	"AT 80287 data.\n286 sends opcodes & operands and receives results."
+
+// "▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+
+0x1f0 || 0x170: "AT hard disk controller: Data register.\n"
+		"Read/write data from/to controller sector buffer"
+0x1f1 || 0x171: "AT hard disk controller\n"
+		"Error register. Bits for last error:\n"
+		"0: Data Address Mark not found\n"
+		"1: Track 0 Error\n"
+		"2: Command aborted\n"
+		"4: Sector ID not found\n"
+		"6: ECC Error: Uncorrectable data error\n"
+		"7: Bad block"
+
+0x1f2 || 0x172:  "AT hard disk controller:\nSector count.\nRead/Write count of sectors for operation"
+0x1f3 || 0x173:  "AT hard disk controller:\nSector number.\nRead/Write current/starting logical sector number"
+0x1f4 || 0x174:  "AT hard disk controller:\nCylinder high (bits 0-1 are bits 8-9 of 10-bit cylinder number)"
+0x1f5 || 0x175:  "AT hard disk controller:\nCylinder low (bits 0-7 of 10-bit cylinder number)"
+0x1f6 || 0x176:  "AT hard disk controller:\nDrive & Head.\nRead/Write: bits indicate head, drive for operation"
+
+0x1f7 || 0x177:  "AT hard disk\n"
+	 	"status register bits:\n"
+		"0: 1=prev cmd error\n"
+		"2: Corrected data\n"
+		"3: Data Request. Buffer is busy\n"
+		"4: Seek completed\n"
+		"5: Write fault\n"
+		"6: Drive ready (unless bit 4=0)\n"
+		"7: Busy"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+0x201:	"Game I/O port\n"
+	"bits 0-3: Coordinates (resistive, time-dependent inputs)\n"
+	"bits 4-7: Buttons/Triggers (digital inputs)"
+
+0x200 ||	  0x202 || 0x203 || 0x204 || 0x205 || 0x206 || 0x207 ||
+0x208 || 0x209 || 0x20A || 0x20B || 0x20C || 0x20D || 0x20E || 0x20F:
+
+		"Game I/O port"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x210:  "XT Expansion chassis control port"
+0x213:  "XT Expansion chassis enable"
+0x215:  "XT Expansion chassis data bus register"
+0x215:  "XT Expansion chassis address register (high byte)"
+0x216:  "XT Expansion chassis address register (low byte)"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x278 || 0x378 || 0x3BC: "Printer Data Latch:\n"
+			 "fetch last byte sent"
+
+0x27a || 0x37a || 0x3BE:  "Printer Control Bits:\n"
+			"0: 1 when sending byte\n"
+			"1: 1 causes LF after CR\n"
+			"2: 0 resets the printer\n"
+			"3: 1 selects the printer\n"
+			"4: +IRQ Enable"
+
+0x279 || 0x379 || 0x3BF:  "Printer Status Bits:\n"
+			"3: 0=printer signals an error\n"
+			"4: 1=printer is selected\n"
+			"5: 1=out of paper\n"
+			"6: 0=ready for next character\n"
+			"7: 0=busy or offline or error"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x2c0 || 0x3c0:  "EGA port"
+
+0x2c2 || 0x3c2:  "EGA : misc cntl\n"
+	"0: 1=select 3BxH\n"
+	"1: 1=enable RAM\n"
+	"2-3: Dot clock\n"
+	"5: Page bit for odd/even mode\n"
+	"6: Horiz retrace polarity: 1=neg, 0=pos\n"
+	"7: Vert retrace polarity: 1=neg, 0=pos"
+
+0x2C4 || 0x3C4: "EGA: sequencer address reg\n"
+0x2c5 || 0x3c5: "EGA port: sequencer data register"
+0x2ca || 0x3ca: "EGA port: graphics 2 position (must be 0 for EGA)"
+0x2cc || 0x3cc:	"EGA port: graphics 1 position (must be 1 for EGA)"
+0x2ce || 0x3ce: "EGA: graph 1 and 2 addr reg:\n"
+0x2cf || 0x3cf: "EGA port: graphics controller data register"
+0x3b4 || 0x3d4: "Video: CRT cntrlr addr\n"
+0x3b5 || 0x3d5: "Video: CRT controller internal registers"
+
+0x3ba || 0x3da: "Video status bits:\n"
+		"0: retrace.  1=display is in vert or horiz retrace.\n"
+		"1: 1=light pen is triggered; 0=armed\n"
+		"2: 1=light pen switch is open; 0=closed\n"
+		"3: 1=vertical sync pulse is occurring."
+
+0x3bb || 0x3db: "Video: light pen latch reset.\nAny OUT clears the latch."
+0x3bc || 0x3dc: "Video: light pen latch set.\nAny OUT arms the latch."
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x2f8 || 0x3f8 || 0x2e8 || 0x3e8:
+		"COM: receiver buffer register.\n"
+		"8 bits of character received."
+0x2e9 || 0x3e9 || 0x2f9 || 0x3f9: 
+		"COM: divisor latch high byte(when DLAB=1)\n"
+		"or interrupt enable register bits:\n"
+		"0:1=an interrupt when rec'd data is available\n"
+		"1:1=interrupt when transmit buffer is empty\n"
+		"2:1=int on rec'r line status (error or break)\n"
+		"3:1=int on modem status (CTS,DSR,RI,RLSD)"
+
+0x2ea || 0x3ea || 0x2fa || 0x3fa: 
+		"COM: interrupt identification register bits:\n"
+		"0: 1=no interrupt pending\n"
+		"1: 00=receiver line status interrupt.  Occurs upon:\n"
+		"      overrun, parity, or framing error, or break\n"
+		"   01=received data available\n"
+		"   10=transmitter buffer empty\n"
+		"   11=modem status."
+
+0x2eb || 0x3eb || 0x2fb || 0x3fb: 
+		"COM: line control register bits:\n"
+		"0-1: word length: 00=5, 01=6, 10=7, 11=8\n"
+		"2:   stop bits: 0=1,1=2\n"
+		"3-4: parity: x0=None, 01=Odd, 11=Even\n"
+		"5:   stuck parity\n"
+		"6:   enable break control. 1=start sending 0s (spaces)\n"
+		"7:   DLAB (Divisor Latch Access Bit)"
+
+0x2ec || 0x3ec || 0x2fc || 0x3fc: 
+		"COM: modem control reg bits:\n"
+		"0: 1=activate -DTR (-data termnl ready), 0=deactivate\n"
+		"1: 1=activate -RTS (-request to send), 0=deactivate\n"
+		"2: 1=activate -OUT1 (spare, user-designated output)\n"
+		"3: 1=activate -OUT2\n"
+		"4: 1=activate loopback for diagnostic testing"
+
+0x2ed || 0x3ed || 0x2fd || 0x3fd: 
+		"COM: line status register bits:\n"
+		"0: 1=data ready (DR)\n"
+		"1: 1=overrun error (OE)\n"
+		"2: 1=parity error (PE)\n"
+		"3: 1=Bad stop bit in character\n"
+		"4: 1=break indicated (BI)\n"
+		"5: 1=transmitter holding register empty\n"
+		"6: 1=transmitter empty"
+
+0x2ee || 0x3ee || 0x2fe || 0x3fe: 
+		"COM: modem status register\n"
+		"0: 1=Delta CTS changed\n"
+		"1: 1=Delta DSR changed\n"
+		"2: 1=Trailing Edge Ring Indicator (TERI) is active\n"
+		"3: 1=Delta DCD has changed\n"
+		"4: 1=CTS is active\n"
+		"5: 1=DSR is active\n"
+		"6: 1=Ring Indicator (RI) is active\n"
+		"7: 1=DCD is active"
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x320:  "XT Hard Disk: status register"
+0x321:  "XT Hard Disk: controller status register bits:\n"
+		"1: 1=error has occurred\n"
+		"5: logical unit number (drive 0 or drive 1)"
+0x322:  "XT Hard Disk: generate controller select pulse"
+0x323:  "XT Hard Disk: DMA and interrupt mask register bits:\n"
+	"0: 1=enable DMA, 0=don't use DMA\n"
+	"1: 1=enable interrupt after ctrlr command (IRQ 5)"
+
+// ▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+0x372 || 0x3F2:  "Floppy: digital output reg bits:\n"
+	"0-1: Drive to select 0-3 (AT: bit 1 not used)\n"
+	"2:   0=reset diskette controller; 1=enable controller\n"
+	"3:   1=enable diskette DMA and interrupts\n"
+	"4-7: drive motor enable.  Set bits to turn drive ON.\n"
+
+0x374 || 0x3F4:  "Floppy: main status reg bits:\n"
+	"0-3: diskette busy\n"
+	"4: 1=cntrlr busy\n"
+	"5: 1=non-DMA mode\n"
+	"6: Data dir: 1=cntrlr to CPU\n"
+	"7: 1=OK to snd/rcv cmd or data"
+
+0x375 || 0x3F5:  "Floppy: FDC command/data register." { op2 ?
+	0xe6: "\nRead data (expects 8 parms to follow; 7 results when done)"
+	0xc5: "\nWrite data (expects 8 parms to follow; 7 results when done)"
+	0x4d: "\nFormat track (expects 5 parms to follow; 7 results when done)"
+	0x07: "\nRecalibrate (expects 1 parm to follow; no results when done)"
+	0x0f: "\nSeek Track (expects 2 parms to follow; no results when done)"
+	}
+
+0x376 || 0x3F6: "AT only. Fixed disk register"
+0x377 || 0x3F7: "Floppy disk: digital input register.\n"
+		"Used for diagnostics (except bit 7):\n"
+		"0:   1=select drive 0\n"
+		"1:   1=select drive 1\n"
+		"2-5: Head select 0-3 (bit 2=hd 0, 3=hd 1, etc)\n"
+		"6:   Write Gate\n"
+		"7:   Change Line (1=ON)"
+
+0xCFC: "PCI Configuration Space Data Register"

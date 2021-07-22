@@ -1,0 +1,384 @@
+//
+//      This file describes Linux system calls (int 0x80)
+//
+//      Version 2.4.9 unistd.h
+//
+// The syscall list now reflects a 2.6.9 kernel unistd.h
+
+// eax == syscall selector (as per below.)
+// inside kernel space its converted to syscall(ebx, ecx, edx, esi, edi, ebp)
+//
+// ebx
+// ecx
+// edx
+// esi
+// edi
+// ebp
+
+
+"LINUX - "
+
+{ ax ?
+
+0x00: "old_setup_syscall"
+0x01: "sys_exit;EBX:int status;"
+0x02: "sys_fork"
+0x03: "sys_read;EBX:int fd;ECX:void *addr;EDX:size_t len;"
+0x04: "sys_write;EBX:int fd;ECX:const void *addr;EDX:size_t len;"
+// /usr/include/asm/types.h:typedef unsigned short umode_t;
+0x05: "sys_open;EBX:char *filename;ECX:int flags;EDX:mode_t mode;"
+0x06: "sys_close;EBX:int fd;"
+0x07: "sys_waitpid;EBX:pid_t pid;ECX:int *status;EDX:int options;"
+0x08: "sys_creat;EBX:const char *filename;ECX:mode_t mode;"
+0x09: "sys_link;EBX:const char *oldpath;ECX:const char *newpath;"
+0x0A: "sys_unlink;EBX:const char *filename;"
+0x0B: "sys_execve;EBX:const char *file;ECX:const char **argv;EDX:const char **envp;"
+0x0C: "sys_chdir;EBX:const char *directory;"
+// defined somewhere.
+0x0D: "sys_time;EBX:time_t *time;"
+// find mode_t ..
+0x0E: "sys_mknod;EBX:const char *pathname;ECX:mode_t mode;EDX:dev_t dev;"
+0x0F: "sys_chmod;EBX:const char *pathname;ECX:mode_t mode;"
+// gids in these cases are 16 bits. unsigned short int would be their
+// defination otherwise.
+0x10: "sys_lchown;EBX:const char *pathname;ECX:uid_t uid;EDX:gid_t gid;"
+0x11: "old_break_syscall"
+// see sys/stat.h, and bits/stat.h
+0x12: "sys_stat;EBX:const char *pathname;ECX:struct stat *buf;"
+// off_t is unsigned int
+0x13: "sys_lseek;EBX:int fd;ECX:off_t offset;EDX:int whence;"
+0x14: "sys_getpid"
+0x15: "sys_mount;EBX:const char *mount;ECX:const char *dest;EDX:const char *filesystype;ESI:unsigned long mountflags;EDI:const void *data;"
+
+// man 2 mount gives umount() and umount2(). Assuming umount means the first
+0x16: "sys_oldumount;EBX:const char *path;"
+
+0x17: "sys_setuid;EBX:uid_t uid;"
+0x18: "sys_getuid"
+0x19: "sys_stime;EBX:time_t *time;"
+0x1A: "sys_ptrace;EBX:int ptrace_request;ECX:pid_t pid;EDX:void *addr;ESI: void *data;"
+0x1B: "sys_alarm;EBX:unsigned int seconds;"
+0x1C: "sys_fstat;EBX:int fd;ECX:struct stat *buf;"
+0x1D: "sys_pause"
+//
+0x1E: "sys_utime;EBX:const char *filename;ECX:const struct utimbuf *buf;"
+
+// obselete / not defined syscalls
+0x1F: "old_stty_syscall"
+0x20: "old_gtty_syscall"
+
+// mode consists of R_OK, W_OK, X_OK and F_OK, which mean, respectively,
+// readable, writable, executable, and file exists.
+
+0x21: "sys_access;EBX:const char *pathname;ECX:int mode;"
+0x22: "sys_nice;EBX:int inc;"
+// ftime is no longer used.
+0x23: "old_ftime_syscall"
+0x24: "sys_sync"
+0x25: "sys_kill;EBX:pid_t pid;ECX:int sig;"
+0x26: "sys_rename;EBX:const char *oldpath;ECX:const char *newpath;"
+0x27: "sys_mkdir;EBX:const char *path;ECX:mode_t mode;"
+0x28: "sys_rmdir;EBX:const char *path;"
+0x29: "sys_dup;EBX:int fd;"
+0x2A: "sys_pipe;EBX:int filedes[2];"
+// sys/times.h
+0x2B: "sys_times;EBX:struct tms *tms;"
+// not used any more.
+0x2C: "old_prof_syscall"
+0x2D: "sys_brk;EBX:void *end_data_segment;"
+0x2E: "sys_setgid;EBX:gid_t gid;"
+0x2F: "sys_getgid"
+// ECX is a function address.
+0x30: "sys_signal;EBX:int signo;ECX:sighandler_t handler;"
+0x31: "sys_geteuid"
+0x32: "sys_getegid"
+0x33: "sys_acct;EBX:const char *filename;"
+0x34: "sys_umount;EBX:const char *path;ECX:int flags;"
+// not used anymore.
+0x35: "old_lock_syscall"
+0x36: "sys_ioctl;EBX:int d;ECX:int request;"
+// EDX might not nessarcily be used.
+0x37: "sys_fcntl;EBX:int fd;ECX:int cmd;EDX:struct flock *lock;"
+// not used.
+0x38: "old_mpx_syscall"
+0x39: "sys_setpgid;EBX:pid_t pid;ECX:pid_t pgid;"
+// not used.
+0x3A: "old_ulimit_syscall"
+0x3B: "sys_olduname"
+0x3C: "sys_umask;EBX:mode_t mask;"
+0x3D: "sys_chroot;EBX:const char *path;"
+// obselete
+0x3E: "sys_ustat;EBX:dev_t dev;ECX:struct ustat *buf;"
+0x3F: "sys_dup2;EBX:int old_fd;ECX:int new_fd;"
+0x40: "sys_getppid"
+0x41: "sys_getpgrp"
+0x42: "sys_setsid"
+0x43: "sys_sigaction;EBX:int signum;ECX:const struct sigaction *act;EDX:struct sigaction *old;"
+// obselete apparently.
+// these should be siggetmask and sigsetmask btw.
+0x44: "sys_sgetmask"
+0x45: "sys_ssetmask;EBX:int newmask;"
+0x46: "sys_setreuid;EBX:uid_t ruid;ECX:uid_t euid;"
+0x47: "sys_setregid;EBX:gid_t rgid;ECX:gid_t egid;"
+0x48: "sys_sigsuspend;EBX:const sigset_t *mask;"
+0x49: "sys_sigpending;EBX:sigset_t *set;"
+0x4A: "sys_sethostname;EBX:const char *hostname;ECX:size_t len;"
+0x4B: "sys_setrlimit;EBX:int resource;ECX:const struct rlimit *rlim;"
+0x4C: "sys_getrlimit;EBX:int resource;ECX:struct rlimit *rlim;"
+0x4D: "sys_getrusage;EBX:int who;ECX:struct rusage *usage;"
+0x4E: "sys_gettimeofday;EBX:struct timeval *tv;ECX:struct timezone *tz;"
+0x4F: "sys_settimeofday;EBX:struct timeval *tv;ECX:struct timesoze *tz;"
+0x50: "sys_getgroups;EBX:int size;ECX:gid_t list[];"
+0x51: "sys_setgroups;EBX:int size;ECX:const gid_t list[];"
+// not used anymore?
+0x52: "old_select"
+0x53: "sys_symlink;EBX:const char *oldpath;ECX:const char *newpath;"
+0x54: "sys_lstat;EBX:const char *filename;ECX:struct stat *statbuf;"
+0x55: "sys_readlink;EBX:const char *filename;ECX:char *buf;EDX:size_t sizebuf;"
+0x56: "sys_uselib;EBX:const char *libname;"
+0x57: "sys_swapon;EBX:const char *path;ECX:int flags;"
+0x58: "sys_reboot;EBX:int magic1;ECX:int magic2;EDX:int magic3;ESI:int magic4;"
+0x59: "old_readdir;EBX:int fd;ECX:struct dirent *dirp;EDX:unsigned int count;"
+0x5A: "old_mmap;EBX:void *start;ECX:size_t len;EDX:int prot;ESI:int flags;EDI:int fd;EBP:off_t off;"
+0x5B: "sys_munmap;EBX:void *addr;ECX:int len;"
+0x5C: "sys_truncate;EBX:const char *path;ECX:off_t len;"
+0x5D: "sys_ftruncate;EBX:int fd;ECX:off_t off;"
+0x5E: "sys_fchmod;EBX:int fd;ECX:mode_t mode;"
+0x5F: "sys_fchown;EBX:int fd;ECX:uid_t owner;EDX:gid_t group;"
+0x60: "sys_getpriority;EBX:int which;ECX:int who;"
+0x61: "sys_setpriority;EBX:int which;ECX:int who;EDX:int prio;"
+// obselete
+0x62: "old_profil_syscall"
+0x63: "sys_statfs;EBX:const char *path;ECX:struct statfs *buf;"
+0x64: "sys_fstatfs;EBX:int fd;ECX:struct statfs *buf;"
+0x65: "sys_ioperm;EBX:int privlevel;"
+
+0x66: { bx ?
+	1 : "sys_socket;EBX:int call;ECX:unsigned long *args;"
+	2 : "sys_bind;EBX:int call;ECX:unsigned long *args;"
+	3 : "sys_connect;EBX:int call;ECX:unsigned long *args;"
+	4 : "sys_listen;EBX:int call;ECX:unsigned long *args;"
+	5 : "sys_accept;EBX:int call;ECX:unsigned long *args;"
+	6 : "sys_getsockname;EBX:int call;ECX:unsigned long *args;"
+	7 : "sys_getpeername;EBX:int call;ECX:unsigned long *args;"
+	8 : "sys_socketpair;EBX:int call;ECX:unsigned long *args;"
+	9 : "sys_sendt;EBX:int call;ECX:unsigned long *args;"
+	10 : "sys_recv;EBX:int call;ECX:unsigned long *args;"
+	11 : "sys_sendto;EBX:int call;ECX:unsigned long *args;"
+	12 : "sys_recvfrom;EBX:int call;ECX:unsigned long *args;"
+	13 : "sys_shutdown;EBX:int call;ECX:unsigned long *args;"
+	14 : "sys_setsockopt;EBX:int call;ECX:unsigned long *args;"
+	15 : "sys_getsockopt;EBX:int call;ECX:unsigned long *args;"
+	16 : "sys_sendmsg;EBX:int call;ECX:unsigned long *args;"
+	17 : "sys_recvmsg;EBX:int call;ECX:unsigned long *args;"
+
+	}
+
+0x67: "sys_syslog;EBX:int type;ECX:char *buf;EDX:int len;"
+0x68: "sys_setitimer;EBX:int which;ECX:struct itimerval *value;EDX:struct itimerval *ovalue;"
+0x69: "sys_getitimer;EBX:int which;ECX:struct itimerval *value;"
+0x6A: "sys_newstat;EBX:const char *path;ECX:struct stat *buf;"
+0x6B: "sys_newlstat;EBX:const char *path;ECX:struct stat *buf;"
+0x6C: "sys_newfstat;EBX:int fd;ECX:struct stat *buf;"
+0x6D: "sys_uname;EBX:struct utsname *uname;"
+0x6E: "sys_iopl;EBX:int iopl;"
+0x6F: "sys_vhangup"
+0x70: "sys_idle"
+0x71: "sys_vm86old;EBX:struct vm86_struct *info;"
+0x72: "sys_wait4;EBX:pid_t pid;ECX:int *status;EDX:int options;ESI:struct rusage *rusage;"
+0x73: "sys_swapoff;EBX:const char *path;"
+// include sys/sysinfo.h
+0x74: "sys_sysinfo;EBX:struct sysinfo *sysinfo;"
+0x75: "sys_ipc;EBX:unsigned int call;ECX:int first;EDX:int second;ESI:int third;EDI:void *ptr;EBP:long fifth;"
+0x76: "sys_fsync;EBX:int fd;"
+0x77: "sys_sigreturn;EBX:long __unused;"
+0x78: "sys_clone;EBX:int flags;ECX:void *child_stack;EDX:int *parent_tidptr;ESI:struct user_desc *newtls;EDI:int *child_pidptr;"
+0x79: "sys_setdomainname;EBX:const char *domainname;ECX:int len;"
+0x7A: "sys_newuname;EBX:struct utsname *utsbuf;"
+0x7B: "sys_modify_ldt;EBX:int func;ECX:void *ptr;EDX:unsigned long len;"
+0x7C: "sys_adjtimex;EBX:struct timex *buf;"
+0x7D: "sys_mprotect;EBX:const void *addy;ECX:size_t len;EDX:int flags;"
+0x7E: "sys_sigprocmask;EBX:int how;ECX:const struct sigaction *act;EDX:struct sigaction *oldact;"
+// linux/module.h
+0x7F: "sys_create_module;EBX:const char *name;EDX:size_t size;"
+0x80: "sys_init_module;EBX:const char *name;ECX:struct module *image;"
+0x81: "sys_delete_module;EBX:const char *name;"
+0x82: "sys_get_kernel_syms;EBX:struct kernel_sym *table;"
+// sys/quota.h
+0x83: "sys_quotactl;EBX:int cmd;ECX:const char *special;EDX:int id;ESI:caddr_t addr;"
+0x84: "sys_getpgid;EBX:pid_t pid;"
+0x85: "sys_fchdir;EBX:int fd;"
+0x86: "sys_bdflush;EBX:int func;ECX:long *address;"
+
+// int sysfs(int option, const char *fsname);
+// int sysfs(int option, unsigned int fs_index, char *buf);
+// int sysfs(int option);
+
+0x87: { bl ?
+		1 : "sys_sysfs;EBX:int option;ECX:const char *fsname;"
+		2 : "sys_sysfs;EBX:int option;ECX:unsigned int fs_index;EDX:char *buf;"
+		other : "sys_sysfs;EBX:int option;"
+	}
+
+0x88: "sys_personality;EBX:unsigned long persona;"
+// not implemented anymore.
+0x89: "old_afs_syscall"
+0x8A: "sys_setfsuid;EBX:uid_t fsuid;"
+0x8B: "sys_setfsgid;EBX:gid_t fsgid;"
+0x8C: "sys_llseek;EBX:int fd;ECX:unsigned long offset_high;EDX:unsigned long offset_low;ESI:loff_t *result;EDI:unsigned int whence;"
+0x8D: "sys_getdents;EBX:unsigned int fd;ECX:struct dirent *dirp;EDX:unsigned int count;"
+0x8E: "sys_select;EBX:int n;ECX:fd_set *readfds;EDX:fd_set *writefds;ESI:fd_set *except_fds;EDI:struct timeval *timeout;"
+0x8F: "sys_flock;EBX:int fd;ECX:int operation;"
+0x90: "sys_msync;EBX:void *addr;ECX:size_t length;EDX:int flags;"
+0x91: "sys_readv;EBX:int fd;ECX:const struct iovec *vector;EDX:int count;"
+0x92: "sys_writev;EBX:int fd;ECX:const struct iovec *vector;EDX:int count;"
+0x93: "sys_getsid;EBX:pid_t pid;"
+0x94: "sys_fdatasync;EBX:int fd;"
+// see manpage for structure definition
+0x95: "sys_sysctl;EBX:struct __sysctl_args *args;"
+0x96: "sys_mlock;EBX:const void *addr;ECX:size_t len;"
+0x97: "sys_munlock;EBX:const void *addr;size_t len;"
+0x98: "sys_mlockall;EBX:int flags;"
+0x99: "sys_munlockall"
+// sched.h
+0x9A: "sys_sched_setparam;EBX:pid_t pid;ECX:const struct sched_param *p;"
+0x9B: "sys_sched_getparam;EBX:pid_t pid;ECX:struct sched_param *p;"
+0x9C: "sys_sched_setscheduler;EBX:pid_t pid;ECX:int policy;EDX:const struct sched_param *p;"
+0x9D: "sys_sched_getscheduler;EBX:pid_t pid;"
+0x9E: "sys_sched_yield"
+0x9F: "sys_sched_get_priority_max;EBX:int policy;"
+0xA0: "sys_sched_get_priority_min;EBX:int policy;"
+0xA1: "sys_sched_rr_get_interval;EBX:pid_t pid;ECX:struct timespec *tp;"
+0xA2: "sys_nanosleep;EBX:const struct timespec *req;ECX:struct timespec *rem;"
+0xA3: "sys_mremap;EBX:void *old_address;ECX:size_t old_size;EDX:size_t new_size;ESI:unsigned long flags;"
+0xA4: "sys_setresuid;EBX:uid_t ruid;ECX:uid_t euid;EDX:uid_t suid;"
+0xA5: "sys_getresuid;EBX:uid_t *ruid;ECX:uid_t *euid;EDX:uid_t *suid;"
+0xA6: "sys_vm86;EBX:unsigned long fn;ECX:struct vm86plus_struct *v86;"
+0xA7: "sys_query_module;EBX:const char *name;ECX:int which;EDX:void *buf;ESI:size_t bufsize;EDI:size_t *ret;"
+0xA8: "sys_poll;EBX:struct pollfds *ufds;ECX:unsigned int nfds;EDX:int timeout;"
+0xA9: "sys_nfsservctl"
+0xAA: "sys_setresgid;EBX:gid_t rgid;ECX:gid_t egid;EDX:gid_t sgid;"
+0xAB: "sys_getresgid;EBX:gid_t *rgid;ECX:gid_t *egid;EDX:gid_t *sgid;"
+0xAC: "sys_prctl;EBX:int option;ECX:unsigned long arg2;EDX:unsigned long arg3;ESI:unsigned long arg4;EDI:unsigned long arg5;"
+// apparently these syscalls are undocumented.
+// I'll look at kernel source later.
+0xAD: "sys_rt_sigreturn"
+0xAE: "sys_rt_sigaction"
+0xAF: "sys_rt_sigprocmask"
+0xB0: "sys_rt_sigpending"
+0xB1: "sys_rt_sigtimedwait"
+0xB2: "sys_rt_sigqueueinfo"
+0xB3: "sys_rt_sigsuspend"
+0xB4: "sys_pread;EBX:int fd;ECX:void *buf;EDX:size_t count;ESI:off_t offset;"
+0xB5: "sys_pwrite;EBX:int fd;ECX:const void *buf;EDX:size_t count;ESI:off_t offset;"
+0xB6: "sys_chown;EBX:const char *path;ECX:uid_t owner;EDX:gid_t group;"
+0xB7: "sys_getcwd;EBX:char *buf;ECX:size_t len;"
+0xB8: "sys_capget;EBX:cap_user_header_t hdrp;ECX:cap_user_data_t datap;"
+0xB9: "sys_capset;EBX:cap_user_header_t hdrp;ECX:const cap_user_data_t datap;"
+// signal.h
+0xBA: "sys_sigaltstack;EBX:const stack_t *ss;ECX:stack_t *oss;"
+0xBB: "sys_sendfile;EBX:int out_fd;ECX:int in_fd;EDX:off_t *offset;ESI:off_t count;"
+// not implemented syscalls
+0xBC: "sys_ni_syscall"
+0xBD: "sys_ni_syscall"
+0xBE: "sys_vfork"
+// undocumented
+191 : "sys_ugetrlimit"
+192 : "sys_mmap2;EBX:void *start;ECX:size_t len;EDX:int prot;ESI:int flags;EDI:int fd;EBP:off_t pgoffset;"
+193 : "sys_truncate64;EBX:const char *path;ECX:off_t length;"
+194 : "sys_ftruncate64;EBX:int fd;ECX:off_t length;"
+195 : "sys_stat64;EBX:const char *filename;ECX:struct stat *buf;"
+196 : "sys_lstat64;EBX:const char *filename;ECX:struct stat *buf;"
+197 : "sys_fstat64;EBX:int fd;ECX:struct stat *buf;"
+198 : "sys_lchown32;EBX:const char *filename;ECX:uid_t owner;EDX:gid_t group;"
+199 : "sys_getuid32"
+200 : "sys_getgid32"
+201 : "sys_geteuid32"
+202 : "sys_getegid32"
+203 : "sys_setreuid32;EBX:uid_t ruid;ECX:uid_t euid;"
+204 : "sys_setregid32;EBX:gid_t rgid;ECX:gid_t egid;"
+205 : "sys_getgroups32;EBX:int size;ECX:gid_t list[];"
+206 : "sys_setgroups32;EBX:int size;ECX:const gid_t *list;"
+207 : "sys_fchown32;EBX:int fd;ECX:uid_t owner;EDX:gid_t group;"
+208 : "sys_setresuid32;EBX:uid_t ruid;ECX:uid_t euid;EDX:uid_t suid;"
+209 : "sys_getresuid32;EBX:uid_t *ruid;ECX:uid_t *euid;EDX:uid_t *suid;"
+210 : "sys_setresgid32;EBX:gid_t rgid;ECX:gid_t egid;EDX:gid_t sgid;"
+211 : "sys_getresgid32;EBX:gid_t *rgid;ECX:gid_t *egid;EDX:gid_t *sgid;"
+212 : "sys_chown32;EBX:const char *path;ECX:uid_t owner;EDX:gid_t group;"
+213 : "sys_setuid32;EBX:uid_t uid;"
+214 : "sys_setgid32;EBX:gid_t gid;"
+215 : "sys_setfsuid32;EBX:uid_t uid;"
+216 : "sys_setfsgid32;EBX:gid_t gid;"
+217 : "sys_pivot_root;EBX:const char *new_root;ECX:const char *put_root;"
+218 : "sys_mincore;EBX:void *start;ECX:size_t length;EDX:unsigned char *vec;"
+219 : "sys_madvise;EBX:void *start;ECX:size_t length;EDX:int advice;"
+219 : "sys_madvise1;EBX:void *start;ECX:size_t length;EDX:int advice;"
+220 : "sys_getdents64;EBX:int fd;ECX:struct dirent *dirp;EDX:unsigned int count;"
+// another one of those variable arg syscalls.
+221 : "sys_fcntl64;EBX:int fd;ECX:int cmd;"
+// 222 -> 223 appear to be unused.
+224 : "sys_gettid"
+225 : "sys_readahead;EBX:int fd;ECX:off64_t *offset;EDX:size_t count;"
+
+// to fill in later.
+226 : "sys_setxattr"
+227 : "sys_lsetxattr"
+228 : "sys_fsetxattr"
+229 : "sys_getxattr"
+230 : "sys_lgetxattr"
+231 : "sys_fgetxattr"
+232 : "sys_listxattr"
+233 : "sys_llistxattr"
+234 : "sys_flistxattr"
+235 : "sys_removexattr"
+236 : "sys_lremovexattr"
+237 : "sys_fremovexattr"
+
+238 : "sys_tkill;EBX:int tid;ECX:int sig;"
+239 : "sys_sendfile64;EBX:int out_fd;ECX:int in_fd;EDX:off_t *offset;ESI:size_t count;"
+240 : "sys_futex;EBX:int *uaddr;ECX:int op;EDX:int val;ESI:const struct timespec *timeout;EDI:int *uaddr2;EBP:int val3;"
+
+241 : "sys_sched_setaffinity"
+242 : "sys_sched_getaffinity"
+243 : "sys_set_thread_area"
+244 : "sys_get_thread_area"
+245 : "sys_io_setup"
+246 : "sys_io_destroy"
+247 : "sys_io_getevents"
+248 : "sys_io_submit"
+249 : "sys_io_cancel"
+250 : "sys_fadvise64"
+252 : "sys_exit_group"
+253 : "sys_lookup_dcookie"
+254 : "sys_epoll_create"
+255 : "sys_epoll_ctl"
+256 : "sys_epoll_wait"
+257 : "sys_remap_file_pages"
+258 : "sys_set_tid_address"
+259 : "sys_timer_create"
+260 : "sys_timer_settime"
+261 : "sys_timer_gettime"
+262 : "sys_timer_getoverrun"
+263 : "sys_timer_delete"
+264 : "sys_clock_settime"
+265 : "sys_clock_gettime"
+266 : "sys_clock_getres"
+267 : "sys_clock_nanosleep"
+268 : "sys_statfs64;EBX:const char *path;ECX:struct statfs *fs;"
+269 : "sys_fstatfs64;EBX:int fd;ECX:struct statfs *fs;"
+270 : "sys_tgkill"
+271 : "sys_utimes"
+272 : "sys_fadvise64_64"
+273 : "sys_vserver"
+274 : "sys_mbind"
+275 : "sys_get_mempolicy"
+276 : "sys_set_mempolicy"
+277 : "sys_mq_open"
+278 : "sys_mq_unlink"
+279 : "sys_mq_timedsend"
+280 : "sys_mq_timedreceive"
+281 : "sys_mq_notify"
+282 : "sys_mq_getsetattr"
+283 : "sys_waitid"
+
+}
