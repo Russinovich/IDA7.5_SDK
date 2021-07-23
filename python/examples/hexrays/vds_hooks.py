@@ -62,7 +62,7 @@ class vds_hooks_t(ida_hexrays.Hexrays_Hooks):
 
     def interr(self, code):
         return self._log("interr: code=%s" % (code,))
-
+    
     def combine(self, blk, insn):
         return self._log("combine: blk=%s, insn=%s" % (blk, insn))
 
